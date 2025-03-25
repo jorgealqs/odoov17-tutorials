@@ -1,10 +1,10 @@
-# 🏢 Odoo Real Estate Projects - Jorge Alberto Quiroz Sierra
+# 🏢 Odoov17 Tutorials
 
 ## 📋 Project Index
 
-### 🌟 Main Module
+### 🌟 Apps Tutorials
 
-1. [Real Estate Management](odoo17-Developer/addons/estate/README.md)
+1. [Real Estate Management](./addons/state/Readme.md)
    - Complete real estate management system
    - Property, offer, and sales handling
    - Built with Odoo 17
@@ -54,6 +54,8 @@ Detailed documentation is available in the module's README file. Check the Real 
 ## 🤝 Contributing
 
 Contributions are welcome. Please read our contribution guidelines before submitting a pull request.
+
+## 📋 Contact me
 
 ## 👤 Author **Jorge Alberto Quiroz Sierra**
 
