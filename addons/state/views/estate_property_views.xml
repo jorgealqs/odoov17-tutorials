@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Estate Property Views
+    ====================
+
+    This file defines all views and actions for managing real estate properties in Odoo.
+
+    Key Components:
+
+    1. Form View (estate_property_view_form):
+    - Header:
+        * Action buttons for Cancel and Sold states
+        * Status bar showing workflow: new → offer received → offer accepted → sold
+    - Main Content:
+        * Title section with property name and tags
+        * Property details in grouped layout
+        * Three tabbed sections:
+        - Description: Physical property details (bedrooms, area, etc.)
+        - Offers: Inline editable offer list with accept/refuse buttons
+        - Other: Salesperson and buyer information
+    - State-dependent features:
+        * Offer editing disabled when property sold/cancelled/accepted
+        * Visual indicators for offer status (danger/success decorations)
+
+    2. List/Tree View (estate_property_tree):
+    - Shows properties in a sortable list
+    - Visual decorations:
+        * Success: offer received/accepted states
+        * Muted: sold state
+        * Bold: offer accepted state
+    - Key fields:
+        * Title, postcode, bedrooms, living area
+        * Expected and selling prices
+        * Availability date (optional)
+        * State (optional)
+
+    3. Search View (estate_property_search):
+    - Search Fields:
+        * Title, postcode, expected price
+        * Bedrooms, living area, facades
+    - Filters:
+        * "Available" filter for new/offer received properties
+    - Grouping:
+        * Group by postcode option
+
+    4. Action Window (action_estate_property):
+    - Configuration:
+        * Model: estate.property
+        * Available views: tree and form
+        * Default view order: tree → form
+
+    Technical Notes:
+    - Uses conditional visibility based on state field
+    - Implements dynamic button states
+    - Supports inline offer management
+    - Includes field decorations for visual state indication
+-->
+<odoo>
+
+    <!-- Kanban View -->
+    <!-- model.name kanban view -->
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate_property Kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban string="Property" class="o_kanban_view" default_group_by="property_type_id">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_content">
+                                <strong><field name="name"/></strong>
+                                <div>
+                                    <span>Expected Price: </span><field name="expected_price"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_received'">
+                                    <span>Best Price: </span><field name="best_price"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
+                                    <span>Selling Price: </span><field name="selling_price"/>
+                                </div>
+                                <div>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Form View Definition -->
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property Form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <!-- Header: Action Buttons and Status Bar -->
+                <header>
+                    <button string="Cancel" name="action_cancel" type="object" class="oe_highlight" invisible="state in ('sold', 'cancelled')"/>
+                    <button string="Sold" name="action_sold" type="object" class="oe_highlight" invisible="state in ('sold', 'cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                </header>
+
+                <!-- Main Content Sheet -->
+                <sheet>
+                    <!-- Title Section -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Property Name"/>
+                        </h1>
+                        <group>
+                            <field name="tag_ids"
+                                widget="many2many_tags"
+                                string="Tags"
+                                options="{'color_field': 'color'}"
+                                help="Tags associated with this property"/>
+                        </group>
+                    </div>
+
+                    <!-- Main Information Groups -->
+                    <group>
+                        <group>
+                            <field name="property_type_id"
+                                string="Property Type"
+                                options="{'no_create': true, 'no_open': true}"
+                                help="Type/category of the property"/>
+                            <field name="postcode" help="Property postal code"/>
+                            <field name="date_availability" help="Date when property becomes available"/>
+                        </group>
+                        <group>
+                            <field name="expected_price" help="Expected selling price"/>
+                            <field name="best_price" help="Best offer received"/>
+                            <field name="selling_price" help="Final selling price"/>
+                        </group>
+                    </group>
+
+                    <!-- Detailed Information Tabs -->
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <!-- Left Column -->
+                                <group>
+                                    <!-- Physical property details -->
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <!-- Garden section with conditional fields -->
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                    <field name="active"/>
+                                    <field name="total_area"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" string="" readonly="state in ('sold', 'cancelled', 'offer_accepted')">
+                                    <!-- Subtree for offers -->
+                                    <tree editable="top" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
+                                        <field name="price"/>
+                                        <field name="partner_id"/>
+                                        <field name="validity" string="Validity (days)"/>
+                                        <field name="date_deadline" string="Deadline"/>
+                                        <field name="status" invisible="1" string=""/>
+                                        <button
+                                            name="action_accepted"
+                                            type="object"
+                                            icon="fa-check"
+                                            class="oe_highlight"
+                                            invisible="status in ('accepted', 'refused')"
+                                            title="Accept"
+                                        />
+                                        <button
+                                            name="action_refused"
+                                            type="object"
+                                            icon="fa-times"
+                                            class="text-danger"
+                                            invisible="status in ('accepted', 'refused')"
+                                            title="Refuse"
+                                        />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Other">
+                            <group>
+                                <field name="salesperson"/>
+                                <field name="buyer"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="estate_property_tree" model="ir.ui.view">
+        <field name="name">estate.property Tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state in ('offer_received', 'offer_accepted')" decoration-muted="state in ('sold')" decoration-bf="state in ('offer_accepted')">
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From" optional="hide"/>
+                <field name="state" string="State" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property Search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Search Fields -->
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="facades"/>
+
+                <!-- Separator for visual organization -->
+                <separator/>
+
+                <!-- Filters -->
+                <filter string="Available"
+                        name="available_properties"
+                        domain="[('state', 'in', ['new', 'offer_received'])]"/>
+
+                <!-- Separator before grouping -->
+                <separator/>
+
+                <!-- Group By Section -->
+                <group expand="0" string="Group By">
+                    <filter string="Postcode"
+                            name="postcode"
+                            context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action Window -->
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'search_default_available_properties': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first record
+            </p>
+        </field>
+    </record>
+</odoo>

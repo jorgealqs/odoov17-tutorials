@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View Definition -->
+    <record id="estate_property_tag_form" model="ir.ui.view">
+        <field name="name">estate.property.tag Form</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Property Tag"/>
+                        </h1>
+                    </div>
+                    <group name="color" string="Color">
+                        <field name="color" widget="color_picker" string=""/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View Definition -->
+    <record id="estate_property_tag_tree" model="ir.ui.view">
+        <field name="name">estate.property.tag Tree</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name" string="Title"/>
+                <field name="color" widget="color_picker"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View Definition -->
+    <record id="estate_property_tag_search" model="ir.ui.view">
+        <field name="name">estate.property.tag Search</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Title"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action Window Definition -->
+    <record id="action_estate_property_tag" model="ir.actions.act_window">
+        <field name="name">Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first record
+            </p>
+        </field>
+    </record>
+
+</odoo>

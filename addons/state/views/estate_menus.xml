@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+################################################################################
+# Estate Module Menu Configuration
+################################################################################
+#
+# This configuration file defines the menu structure for the Estate module in Odoo.
+# It establishes a hierarchical navigation system for accessing property-related
+# features and functionalities.
+#
+# Menu Structure:
+# └── Estate Property (Main Menu)
+#     └── Advertisements (First Level)
+#         ├── Properties
+#         └── Type
+#
+# Technical Details:
+# - File: estate_menus.xml
+# - Module: estate
+# - Application: Real Estate Management
+#
+# Menu Items Configuration:
+# 1. Root Menu (estate_property_menu):
+#    - Serves as the main entry point for the Estate module
+#    - Appears in Odoo's main navigation bar
+#    - Sequence: 10 (determines position in main menu)
+#
+# 2. First Level Menu (estate_property_model):
+#    - Groups property-related functionalities
+#    - Parent: estate_property_menu
+#    - Sequence: 10
+#
+# 3. Action Menus:
+#    a. Properties (estate_property_action_model):
+#       - Links to property listings view
+#       - Action reference: action_estate_property
+#       - Sequence: 10
+#
+#    b. Type (estate_property_type_menu):
+#       - Links to property types management
+#       - Action reference: action_estate_property_type
+#       - Sequence: 20
+#
+# Note: Lower sequence numbers appear higher in the menu order
+################################################################################
+-->
+<odoo>
+    <!-- Root Menu Item -->
+    <menuitem
+        id="estate_property_menu"
+        name="Estate Property"
+        sequence="10"/>
+
+    <!-- First Level Menu -->
+    <menuitem
+        id="estate_property_model"
+        name="Advertisements"
+        parent="estate_property_menu"
+        sequence="10"/>
+
+    <menuitem
+        id="estate_property_settings_model"
+        name="Settings"
+        parent="estate_property_menu"
+        sequence="20"/>
+
+    <!-- Properties Menu Item -->
+    <menuitem
+        id="estate_property_action_model"
+        name="Properties"
+        parent="estate_property_model"
+        action="action_estate_property"
+        sequence="10"/>
+
+    <!-- Property Types Menu Item -->
+    <menuitem
+        id="estate_property_type_menu"
+        name="Property Type"
+        action="action_estate_property_type"
+        parent="estate_property_settings_model"
+        sequence="20"/>
+
+    <menuitem
+        id="estate_property_tag_menu"
+        name="Property Tags"
+        action="action_estate_property_tag"
+        parent="estate_property_settings_model"
+        sequence="30"/>
+</odoo>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This XML file defines the views and actions for the Estate Property Type model in Odoo.
+
+    Key Components:
+    1. Form View (estate_property_type_form):
+    - Main form for creating/editing property types
+    - Features:
+        * Button box with offer count statistic
+        * Property type name field in title area
+        * Properties notebook page showing related properties in read-only mode
+    - Fields displayed in properties list:
+        * Title (name)
+        * Expected price
+        * Status (state)
+
+    2. List/Tree View (estate_property_type_tree):
+    - Displays property types in a sortable list
+    - Features:
+        * Drag handle for manual reordering (sequence field)
+        * Property type name shown as "Title"
+
+    3. Search View (estate_property_type_search):
+    - Enables searching/filtering property types
+    - Search fields:
+        * Title (name field)
+
+    4. Action Window (action_estate_property_type):
+    - Defines the behavior when accessing property types
+    - Configuration:
+        * Available views: tree (list) and form
+        * Custom empty state message
+        * Model: estate.property.type
+-->
+<odoo>
+    <!-- Form View Definition -->
+    <record id="estate_property_type_form" model="ir.ui.view">
+        <field name="name">estate.property.type Form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(state.action_estate_property_offer)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-dollar"
+                                help="Total offers by type of property">
+                            <field name="offer_count" widget="statinfo" string=""/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Property Type"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids" readonly="1">
+                                <tree>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state" string="Status"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View Definition -->
+    <record id="estate_property_type_tree" model="ir.ui.view">
+        <field name="name">estate.property.type Tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Title"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View Definition -->
+    <record id="estate_property_type_search" model="ir.ui.view">
+        <field name="name">estate.property.type Search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Title"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action Window Definition -->
+    <record id="action_estate_property_type" model="ir.actions.act_window">
+        <field name="name">Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first record
+            </p>
+        </field>
+    </record>
+
+</odoo>

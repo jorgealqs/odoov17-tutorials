@@ -1,0 +1,66 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+*.env
+
+# Odoo-specific files
+odoo.conf
+addons/.local/
+addons/*/__pycache__/
+dist/
+build/
+
+# Logs and database
+logs/
+*.log
+db.sqlite3
+dump.sql
+
+# Python dependencies
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Editor & OS-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Node.js / assets
+node_modules/
+yarn.lock
+package-lock.json
+
+# Compiled assets
+*.min.js
+*.min.css
+*.map
+
+# Test & coverage reports
+.coverage
+htmlcov/
+*.cover
+.tox/
+.nox/
+
+# Ignore custom scripts or temporary files
+*.bak
+*.tmp
+*.old
+
+
+#other own
+odoo_pg_pass
+log/
+config/
