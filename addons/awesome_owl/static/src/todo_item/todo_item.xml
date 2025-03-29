@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    TodoItem Component Template
+    Renders a single todo item with checkbox, description and delete button
+
+    Props used:
+    - props.todo.id: Unique identifier for the todo
+    - props.todo.description: Text content of the todo
+    - props.todo.isCompleted: Boolean for completion status
+
+    Events:
+    - t-on-change="onChange": Toggles completion status
+    - t-on-click="onRemove": Deletes the todo item
+-->
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoitem">
+        <div class="form-check">
+            <!-- Checkbox for todo completion -->
+            <input
+                class="form-check-input"
+                type="checkbox"
+                t-att-id="props.todo.id"
+                t-att-checked="props.todo.isCompleted"
+                t-on-change="onChange"
+            />
+            <!-- Todo description with conditional strikethrough -->
+            <label
+                t-att-for="props.todo.id"
+                t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : ''"
+            >
+                <t t-esc="props.todo.id"/>.
+                <t t-esc="props.todo.description"/>
+            </label>
+            <!-- Delete button -->
+            <span
+                role="button"
+                class="fa fa-remove ms-3 text-danger"
+                t-on-click="onRemove"
+            />
+        </div>
+    </t>
+</templates>

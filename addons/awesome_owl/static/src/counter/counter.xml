@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Counter Component Template
+    Defines the UI structure for a simple counter with an increment button
+-->
+<templates xml:space="preserve">
+    <!--
+        Counter template
+        @name: awesome_owl.counter
+
+        Elements:
+        - Display area showing current counter value
+        - Button to increment the counter
+
+        Classes:
+        - m-2: margin of 2 units
+        - p-2: padding of 2 units
+        - border: adds border to container
+        - d-inline-block: displays as inline block
+        - me-2: margin end (right) of 2 units
+        - btn: Bootstrap button class
+        - btn-primary: Bootstrap primary button style
+    -->
+    <t t-name="awesome_owl.counter">
+        <div class="m-2 p-2 border d-inline-block">
+            <!-- Counter value display -->
+            <span class="me-2">Counter: <t t-esc="state.value"/></span>
+
+            <!-- Increment button with click handler -->
+            <button class="btn btn-primary" t-on-click="increment">Increment</button>
+        </div>
+    </t>
+</templates>

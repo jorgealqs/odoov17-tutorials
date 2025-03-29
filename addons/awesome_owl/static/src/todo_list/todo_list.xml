@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    TodoList Component Template
+
+    Structure:
+    - Container with border and padding
+    - Input field for new todos
+    - Dynamic list of TodoItem components
+
+    Events:
+    - t-on-keyup="addTodo": Handles new todo creation
+    - toggleState.bind="toggleTodo": Handles todo completion
+    - removeTodo.bind="trashTodo": Handles todo deletion
+-->
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todolist">
+        <!-- Main container -->
+        <div class="d-inline-block border p-2 m-2">
+            <!-- Todo input field -->
+            <input
+                class="form-control mb-3"
+                type="text"
+                placeholder="Add a todo"
+                t-on-keyup="addTodo"
+                t-ref="add-todo"
+            />
+            <!-- Todo items list -->
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                <TodoItem
+                    todo="todo"
+                    toggleState.bind="toggleTodo"
+                    removeTodo.bind="trashTodo"
+                />
+            </t>
+        </div>
+    </t>
+</templates>

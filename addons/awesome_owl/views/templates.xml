@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This template defines the main structure for the Awesome OWL playground.
+    It sets up the basic HTML structure and includes necessary assets.
+-->
+<odoo>
+    <data>
+        <!-- Main Playground Template -->
+        <!--
+            @id: unique identifier for this template
+            @name: display name shown in Odoo's UI
+        -->
+        <template id="awesome_owl.playground" name="Awesome OWL Playground">
+            <html>
+                <head>
+                    <!-- Include Odoo's favicon -->
+                    <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+
+                    <!--
+                        Load all assets defined in the awesome_owl.assets_playground bundle
+                        This includes JS files, CSS, and other resources needed for the playground
+                    -->
+                    <t t-call-assets="awesome_owl.assets_playground"/>
+                </head>
+
+                <body>
+                    <!--
+                        The body will be populated by OWL components defined in
+                        the JavaScript files (playground.js, counter.js, etc.)
+                    -->
+                </body>
+            </html>
+        </template>
+    </data>
+</odoo>

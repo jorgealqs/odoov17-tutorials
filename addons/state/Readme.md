@@ -64,13 +64,13 @@ addons/estate/
 1. Clone the repository into your Odoo addons directory:
 
     ```bash
-    git clone [repository-url] /path/to/odoo/addons/estate
+        git clone git@github.com:jorgealqs/odoov17-tutorials.git /path/to/odoo/addons/estate
     ```
 
 2. Update your Odoo configuration to include the new module:
 
     ```bash
-    path/to/odoo/odoo-bin -d your_database -i estate
+        path/to/odoo/odoo-bin -d your_database -i estate
     ```
 
 3. Restart your Odoo server and update the module list.

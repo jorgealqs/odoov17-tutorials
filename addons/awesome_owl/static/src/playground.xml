@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Playground Component Template
+    This template defines the structure and layout of the main playground interface.
+-->
+<templates xml:space="preserve">
+    <!--
+        Main playground template
+        @name: awesome_owl.playground
+        Components used:
+        - Counter: Interactive counter component with onChange event binding
+        - Card: Display component that renders content with a title
+    -->
+    <t t-name="awesome_owl.playground">
+        <div class="p-3">
+            <!-- Welcome message -->
+            hello world
+
+            <!-- Counter components that update the total sum -->
+            <Counter onChange.bind="incrementSum" />
+            <Counter onChange.bind="incrementSum" />
+
+            <!-- Display the current sum value -->
+            <div>The sum is: <t t-esc="sum.value"/></div>
+
+            <!-- Card components displaying content from str1 and str2 -->
+            <!-- <Card title="'card 1'" content="str1"/>
+            <Card title="'card 2'" content="str2"/> -->
+
+            <Card title="'card 1'">
+                content of card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter />
+            </Card>
+            <div>
+                <TodoList />
+            </div>
+        </div>
+    </t>
+</templates>
